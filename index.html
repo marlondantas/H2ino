@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link id="tems" rel="stylesheet" type="text/css" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <title>H2INO - LOGIN</title>
+</head>
+
+<body style="overflow: hidden">
+
+    <div class="header">
+        <h1 class="logo">H2<span>INO&#x1f4a7</span></h1>
+    </div>
+    <div class="container">
+        <center>
+            <div class="boxLogin">
+                <h1 class="tit">LOGIN</h1>
+                <form action="#" method="post" id="form1">
+                    <input class="entrada" type="text" name="email" placeholder="E-mail" required>
+                    <input class="entrada" type="password" name="senha" placeholder="Senha" required>
+                    <button class="btnEntrar" type="submit" name="a"form="form1" value="Entrar">Entrar</button>
+                    <br><br>
+                    <a class="cadast" href="cadastro.php">Não possui uma conta? Cadastre-se</a>
+                </form>
+
+            </div>
+        </center>
+    </div>
+    <!--
+    https://www.w3schools.com/css/css_rwd_mediaqueries.asp
+    -->
+</body>
+
+</html>
+
+<?php
+
+if(isset($_POST['a'])) {
+  require_once('conn.php');
+  require_once('DAOusuario.php');
+
+  $usuario = new UsuarioDAO();
+
+  $email = addslashes($_POST['email']);
+  $senha = addslashes($_POST['senha']);
+  $user = $usuario->login($email, $senha);
+
+  if($user == true) {
+    if(session_id() == '' || !isset($_SESSION)) {
+        session_start();
+    }
+    $_SESSION['email'] = $email;
+    $_SESSION['senha'] = $senha;
+    header('location:index.php?success=senha');
+  } else {
+    header('location:index.php?erro=senha');
+  }
+}
+
+  if(isset($_GET['erro'])) {
+    echo '<script type="text/javascript">
+    toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr["error"]("E-mail e/ou senha incorretos!", "ERRO")
+        </script>';
+  }
+
+
+  if(isset($_GET['success'])) {
+    echo '<script type="text/javascript">
+    toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr["success"]("Logado com sucesso!", "H2INO")
+
+        setTimeout(function(){window.location.href = "painel.php";}, 2000);
+        </script>';
+  }
+?>

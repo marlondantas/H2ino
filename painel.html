@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link id="temsTab" rel="stylesheet" type="text/css" href="tab.css">
+    <link id="tems" rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="scripts.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
+
+    <script>
+    rec();
+    function rec(){
+        setTimeout(function(){ 
+            $.ajax({
+              url: "funcao.php",
+              type: "POST",
+              dataType: "json",              
+              success: function(json){
+            console.log( json.msg );
+              }
+          })
+          rec();
+        }, 5000);         
+    }   
+    </script>
+
+    <title>H2INO - Painel</title>
+</head>
+
+<body>
+
+    <div class="header">
+    <h1 class="logo">H2<span class="ino">INO&#x1f4a7</span></h1>
+</div>
+    <div class="row">
+        <div class="col-3 menu">
+        </div>
+
+        <div class="col-6">
+        <!-- <?php 
+        require_once('conn.php');
+        $mysqli = new Conexao();
+        $stmt = mysqli_query($mysqli->getCon(), "SELECT nome FROM usuarios ORDER BY nome DESC LIMIT 1;");
+        $row = mysqli_fetch_array($stmt);
+        $email = $row["nome"];
+        echo "<h2  class='tit2'>Bem-vindo , " . $email . "</h2>";
+        ?> -->
+            <h1 class="tit">Nível de Água:</h1>
+            <center>
+                <div class="wave-fill">
+                    <div id="tt" class="water">
+                        <span class="wave"></span>
+                        <span class="deep-water"></span>
+                    </div>
+                </div>
+<!--                 
+                <?php
+                $stmt = mysqli_query($mysqli->getCon(), "SELECT nivel FROM registro ORDER BY id_nivel DESC LIMIT 1;");
+                $row = mysqli_fetch_array($stmt);
+                $num = $row["nivel"];
+                echo "<div id='block_container'>";
+                echo "<div class='num'>" . $num . "</div>";
+                echo "<div id='perc'>%</div>";
+                echo "</div>";
+
+                echo "<script>
+                definirValores(" . $num . ");
+                </script>";
+                ?> -->
+                
+                <h1 class="Minitit">Registros de Mudança:</h1>
+                <canvas class="line-chart"></canvas>
+                <!-- <?php
+                $nivel = array();
+                $dataa = array();
+                $i = 0;
+                $stmt = mysqli_query($mysqli->getCon(), "SELECT * FROM registro ORDER BY data ASC");
+
+                echo "<table id='customers'>";
+                echo "  <tr>
+                        <th>ID</th>
+                        <th>NÍVEL</th>
+                        <th>DATA/HORA</th>
+                        </tr>";
+
+                while ($row = mysqli_fetch_array($stmt)) {
+                    $time = strtotime($row["data"]);
+                    $data = date("d/m/y", $time);
+                    $hora = date("H:i:s", $time);
+                    echo "<tr>";
+                    echo "<td>" . $row["id_nivel"] . "</td>";
+                    echo "<td>" . $row["nivel"] . "%" . "</td>";
+                    echo "<td>" . $data . " às " . $hora . "</td>";
+                    echo "</tr>";
+                    $nivel[$i] = $row["nivel"];
+                    $dataa[$i] = date("d/m", $time) . " " . date("H:i", $time);
+                    $i = $i + 1;
+                }
+                $stmt->free();
+                ?>
+                <?php
+                if ($i != 0) {
+                    ?>
+                    
+                <?php 
+            } else echo "<h1>Não contém registros</h1>" ?> -->
+        </div>
+        </center>
+    <!--
+    https://www.w3schools.com/css/css_rwd_mediaqueries.asp
+    -->
+
+</body>
+
+<script src="chart/Chart.js"></script>
+
+<script>
+
+var ctx = document.getElementsByClassName("line-chart");
+
+var chartGraph = new Chart(ctx, {
+
+    type: 'line',
+    data: {
+        // labels: [<?php 
+        //         $k = $i;
+        //         $k2 = $i;
+        //         if ($i < 6) {
+        //             for ($i = 0; $i < $k; $i++) {
+        //                  echo "'" . $dataa[$i] . "'" . ",";
+        //              }
+        //              } else {
+        //                         for ($i = $k - 6; $i < $k; $i++) {
+        //                             echo "'" . $dataa[$i] . "'" . ",";
+                                
+        //                         }
+        //                         } ?>],
+        datasets: [{
+            label: "Nível de Água %",
+            // data: [<?php 
+            //         $k = $i;
+            //         $k2 = $i;
+            //         if ($i < 6) {
+            //             for ($i = 0; $i < $k; $i++) {
+            //                  echo "'" . $nivel[$i] . "'" . ",";
+            //              }
+            //              } else {
+            //                         for ($i = $k - 6; $i < $k; $i++) {
+            //                             echo "'" . $nivel[$i] . "'" . ",";
+                                    
+            //                         }
+            //                         } 
+            // ?>],
+            borderWidth: 6,
+            borderColor: 'rgba(4, 103, 246, 0.85)',
+            
+        }]
+                                    }
+});
+
+
+
+</script>
+</html>
+
+<!-- <?php
+if(isset($_GET['logout'])) {
+    echo '<script type="text/javascript">
+    toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr["success"]("Você saiu com sucesso!", "H2INO")
+
+        setTimeout(function(){window.location.href = "index.php";}, 1500);
+        </script>';
+  }
+
+if(isset($_POST['a'])) {
+    header('location:painel.php?logout');
+  }
+?> -->
